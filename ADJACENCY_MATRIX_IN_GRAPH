@@ -1,23 +1,30 @@
 #include <iostream>
 #include <vector>
-
+#include <list>
 using namespace std;
 
-class GraphMatrix {
+class Graph {
 private:
     int numVertices;
     vector<vector<int>> adjMatrix;
+    vector<list<int>> adjList;
 
 public:
-    GraphMatrix(int vertices) : numVertices(vertices) {
+    Graph(int vertices) : numVertices(vertices) {
         // Initialize adjacency matrix with zeros
         adjMatrix.resize(numVertices, vector<int>(numVertices, 0));
+
+        // Initialize adjacency list
+        adjList.resize(numVertices);
     }
 
     // Add an edge between vertices u and v
     void addEdge(int u, int v) {
         adjMatrix[u][v] = 1;
         adjMatrix[v][u] = 1; // For undirected graph
+
+        adjList[u].push_back(v);
+        adjList[v].push_back(u); // For undirected graph
     }
 
     // Print adjacency matrix
@@ -30,28 +37,43 @@ public:
             cout << endl;
         }
     }
+
+    // Print adjacency lists
+    void printAdjList() {
+        cout << "Adjacency Lists:" << endl;
+        for (int i = 0; i < numVertices; ++i) {
+            cout << i << " -> ";
+            for (int v : adjList[i]) {
+                cout << v << " ";
+            }
+            cout << endl;
+        }
+    }
 };
 
 int main() {
     int numVertices, numEdges;
-    cout << "Enter the number of vertices: ";
+    cout << "Enter the number of vertices in the graph: ";
     cin >> numVertices;
 
-    // Create a graph with user-specified number of vertices using adjacency matrix
-    GraphMatrix graphMatrix(numVertices);
+    // Create a graph with user-specified number of vertices
+    Graph graph(numVertices);
 
-    cout << "Enter the number of edges: ";
+    cout << "Enter the number of edges in the graph: ";
     cin >> numEdges;
 
     cout << "Enter the edges (vertex pairs separated by space):" << endl;
     for (int i = 0; i < numEdges; ++i) {
         int u, v;
         cin >> u >> v;
-        graphMatrix.addEdge(u, v);
+        graph.addEdge(u, v);
     }
 
     // Print adjacency matrix
-    graphMatrix.printAdjMatrix();
+    graph.printAdjMatrix();
+
+    // Print adjacency lists
+    graph.printAdjList();
 
     return 0;
 }
