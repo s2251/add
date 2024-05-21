@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class MaxHeap {
+private:
+    vector<int> heap;
+
+    // Get the parent index of a node
+    int parent(int index) {
+        return (index - 1) / 2;
+    }
+
+    // Get the left child index of a node
+    int leftChild(int index) {
+        return 2 * index + 1;
+    }
+
+    // Get the right child index of a node
+    int rightChild(int index) {
+        return 2 * index + 2;
+    }
+
+    // Heapify up operation (to maintain heap property after insertion)
+    void heapifyUp(int index) {
+        while (index > 0 && heap[parent(index)] < heap[index]) {
+            swap(heap[parent(index)], heap[index]);
+            index = parent(index);
+        }
+    }
+
+public:
+    // Insert an element into the max-heap
+    void insert(int value) {
+        heap.push_back(value);
+        heapifyUp(heap.size() - 1);
+    }
+
+    // Display the elements of the max-heap
+    void display() {
+        cout << "Max-Heap: ";
+        for (int i = 0; i < heap.size(); ++i) {
+            cout << heap[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    MaxHeap maxHeap;
+
+    int numElements;
+    cout << "Enter the number of elements to insert into the max-heap: ";
+    cin >> numElements;
+
+    cout << "Enter the elements to insert:" << endl;
+    for (int i = 0; i < numElements; ++i) {
+        int element;
+        cin >> element;
+        maxHeap.insert(element);
+    }
+
+    // Display the max-heap
+    maxHeap.display();
+
+    return 0;
+}
