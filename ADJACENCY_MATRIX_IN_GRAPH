@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class GraphMatrix {
+private:
+    int numVertices;
+    vector<vector<int>> adjMatrix;
+
+public:
+    GraphMatrix(int vertices) : numVertices(vertices) {
+        // Initialize adjacency matrix with zeros
+        adjMatrix.resize(numVertices, vector<int>(numVertices, 0));
+    }
+
+    // Add an edge between vertices u and v
+    void addEdge(int u, int v) {
+        adjMatrix[u][v] = 1;
+        adjMatrix[v][u] = 1; // For undirected graph
+    }
+
+    // Print adjacency matrix
+    void printAdjMatrix() {
+        cout << "Adjacency Matrix:" << endl;
+        for (int i = 0; i < numVertices; ++i) {
+            for (int j = 0; j < numVertices; ++j) {
+                cout << adjMatrix[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    int numVertices, numEdges;
+    cout << "Enter the number of vertices: ";
+    cin >> numVertices;
+
+    // Create a graph with user-specified number of vertices using adjacency matrix
+    GraphMatrix graphMatrix(numVertices);
+
+    cout << "Enter the number of edges: ";
+    cin >> numEdges;
+
+    cout << "Enter the edges (vertex pairs separated by space):" << endl;
+    for (int i = 0; i < numEdges; ++i) {
+        int u, v;
+        cin >> u >> v;
+        graphMatrix.addEdge(u, v);
+    }
+
+    // Print adjacency matrix
+    graphMatrix.printAdjMatrix();
+
+    return 0;
+}
