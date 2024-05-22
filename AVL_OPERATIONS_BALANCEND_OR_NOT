@@ -18,6 +18,20 @@ Node* createNode(int value) {
     return newNode;
 }
 
+// Function to calculate the height of a tree
+int height(Node* root) {
+    if (root == nullptr)
+        return 0;
+    return max(height(root->left), height(root->right)) + 1;
+}
+
+// Function to calculate the balance factor of a node
+int balanceFactor(Node* root) {
+    if (root == nullptr)
+        return 0;
+    return height(root->left) - height(root->right);
+}
+
 // Function to insert a value into the binary tree
 Node* insertNode(Node* root, int value) {
     if (root == nullptr)
@@ -28,30 +42,10 @@ Node* insertNode(Node* root, int value) {
     else if (value > root->data)
         root->right = insertNode(root->right, value);
     
+    // Calculate balance factor after each insertion
+    cout << "Balance Factor after inserting " << value << ": " << balanceFactor(root) << endl;
+
     return root;
-}
-
-// Function to calculate the height of a tree
-int height(Node* root) {
-    if (root == nullptr)
-        return 0;
-    return max(height(root->left), height(root->right)) + 1;
-}
-
-// Function to check if the tree is balanced or not
-bool isBalanced(Node* root) {
-    if (root == nullptr)
-        return true;
-    int leftHeight = height(root->left);
-    int rightHeight = height(root->right);
-    return abs(leftHeight - rightHeight) <= 1 && isBalanced(root->left) && isBalanced(root->right);
-}
-
-// Function to check if the tree is AVL or not
-bool isAVL(Node* root) {
-    if (root == nullptr)
-        return true;
-    return isBalanced(root) && isAVL(root->left) && isAVL(root->right);
 }
 
 // Function to perform left rotation
@@ -72,21 +66,20 @@ Node* rightRotation(Node* root) {
 
 // Function to identify rotation cases for AVL balancing
 Node* avlBalancing(Node* root) {
-    int leftHeight = height(root->left);
-    int rightHeight = height(root->right);
+    int bf = balanceFactor(root);
 
-    if (abs(leftHeight - rightHeight) <= 1)
+    if (abs(bf) <= 1)
         return root; // Tree is balanced
 
-    if (leftHeight > rightHeight) {
-        if (height(root->left->left) < height(root->left->right)) {
+    if (bf > 1) {
+        if (balanceFactor(root->left) < 0) {
             // LR Rotation Case
             root->left = leftRotation(root->left);
         }
         // LL Rotation Case
         root = rightRotation(root);
     } else {
-        if (height(root->right->right) < height(root->right->left)) {
+        if (balanceFactor(root->right) > 0) {
             // RL Rotation Case
             root->right = rightRotation(root->right);
         }
@@ -127,15 +120,8 @@ int main() {
     for (int i = 0; i < n; ++i) {
         cin >> value;
         root = insertNode(root, value);
-    }
-
-    cout << "Tree is " << (isBalanced(root) ? "" : "not ") << "balanced." << endl;
-    cout << "Tree is " << (isAVL(root) ? "" : "not ") << "AVL." << endl;
-
-    if (!isBalanced(root)) {
-        cout << "Tree is imbalanced. Performing AVL balancing." << endl;
+        // Rebalance the tree after each insertion
         root = avlBalancing(root);
-        cout << "After balancing, ";
     }
 
     cout << "Tree (Level Order Traversal): ";
