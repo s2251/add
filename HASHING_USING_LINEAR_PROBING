@@ -1,3 +1,5 @@
+/*HASHING LINEAR PROBING*/
+
 #include <iostream>
 #include <vector>
 using namespace std;
