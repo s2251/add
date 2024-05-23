@@ -1,3 +1,5 @@
+/*PRIMS ALGO*/
+
 #include <iostream>
 #include <vector>
 #include <queue>
