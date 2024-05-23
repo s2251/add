@@ -122,9 +122,10 @@ int main() {
     for (int i = 0; i < n; ++i) {
         cin >> value;
         root = insertNode(root, value);
-        // Rebalance the tree after each insertion
-        root = avlBalancing(root);
     }
+
+    // Rebalance the tree after all insertions
+    root = avlBalancing(root);
 
     // Print balance factor after tree construction
     cout << "Balance Factor after tree construction: " << balanceFactor(root) << endl;
