@@ -38,12 +38,12 @@ int balanceFactor(Node* root) {
 Node* insertNode(Node* root, int value) {
     if (root == nullptr)
         return createNode(value);
-    
+
     if (value < root->data)
         root->left = insertNode(root->left, value);
     else if (value > root->data)
         root->right = insertNode(root->right, value);
-    
+
     // Calculate balance factor after each insertion
     cout << "Balance Factor after inserting " << value << ": " << balanceFactor(root) << endl;
 
@@ -125,6 +125,9 @@ int main() {
         // Rebalance the tree after each insertion
         root = avlBalancing(root);
     }
+
+    // Print balance factor after tree construction
+    cout << "Balance Factor after tree construction: " << balanceFactor(root) << endl;
 
     cout << "Tree (Level Order Traversal): ";
     levelOrderTraversal(root);
